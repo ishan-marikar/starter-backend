@@ -18,31 +18,35 @@ const middleware = require("./middleware");
 const logger = require("./utils/logging")("server");
 
 // ⚙ Configurations
+// ↳ Server (Express)
 server = config.server(server);
+// ↳ Database (Mongoose)
 database = config.database(database);
 
 // ⚙ Middleware
-// ➡ Prettify the payload
+// ↳ Standardize the response
 server.use(middleware.routeFormatter);
+// ↳ Log the request
 server.use(middleware.routeLoggerRequest);
+// ↳ Log the response
 server.use(middleware.routeLoggerResponse);
 
 // ⚙ Routes
-// ➡ API Information
+// ↳ API Information
 server.get("/", (request, response, next) => {
   return response.json({
     data: "jello"
   });
 });
 
-// ➡ Route 404 Handler
+// ↳ Route 404 Handler
 server.use((request, response, next) => {
   return response.status(404).json({
     error: "route.not-found"
   });
 });
 
-// ➡ Router Error Handler
+// ↳ Router Error Handler
 server.use((error, request, response) => {});
 
 // ⚡ Listen to connections
